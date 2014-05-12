@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="utils"
-	ProjectGUID="{562AE112-44D2-4F34-A147-28C4902B52C7}"
-	RootNamespace="utils"
+	Name="inilib"
+	ProjectGUID="{F5E11B3E-B74E-43E1-93E6-54B329D0891C}"
+	RootNamespace="inilib"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -40,7 +40,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="..\..\publish\inilib\src"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;INI_BUILDING"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -115,7 +116,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="..\..\publish\inilib\src"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;INI_BUILDING"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -178,18 +180,112 @@
 				RelativePath=".\main.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\str_utils.h"
+		</Filter>
+		<Filter
+			Name="publish"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			>
+			<Filter
+				Name="inilib"
 				>
-			</File>
-			<File
-				RelativePath=".\sys_utils.h"
-				>
-			</File>
-			<File
-				RelativePath=".\task_scheduler.h"
-				>
-			</File>
+				<Filter
+					Name="src"
+					>
+					<File
+						RelativePath="..\..\publish\inilib\src\attr_attr_arith.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\attr_attr_comp.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\attr_other_arith.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\attr_other_comp.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\attribute.cc"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\attribute.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\bool_attribute.cc"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\bool_attribute.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\Debug.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\double_attribute.cc"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\double_attribute.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\ini_config.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\ini_config.h.in"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\ini_functions.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\ini_getline.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\inilib.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\int_attribute.cc"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\int_attribute.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\registry.cc"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\registry.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\section.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\string_attribute.cc"
+						>
+					</File>
+					<File
+						RelativePath="..\..\publish\inilib\src\string_attribute.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

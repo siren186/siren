@@ -4,8 +4,8 @@
 	Version="8.00"
 	Name="libprotoc"
 	ProjectGUID="{B84FF31A-5F9A-46F8-AB22-DBFC9BECE3BE}"
+	RootNamespace="libprotoc"
 	Keyword="Win32Proj"
-	TargetFrameworkVersion="0"
 	>
 	<Platforms>
 		<Platform
@@ -17,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
+			OutputDirectory="..\..\..\output\lib"
 			IntermediateDirectory="Debug"
 			ConfigurationType="4"
 			>
@@ -80,7 +80,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
+			OutputDirectory="..\..\..\output\lib"
 			IntermediateDirectory="Release"
 			ConfigurationType="4"
 			>
@@ -156,22 +156,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\google\protobuf\compiler\subprocess.h"
-				>
-			</File>
-      <File
-        RelativePath="..\src\google\protobuf\compiler\zip_writer.h"
-        >
-      </File>
-			<File
-				RelativePath="..\src\google\protobuf\compiler\plugin.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\google\protobuf\compiler\plugin.pb.h"
-				>
-			</File>
-			<File
 				RelativePath="..\src\google\protobuf\compiler\cpp\cpp_enum.h"
 				>
 			</File>
@@ -224,6 +208,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\google\protobuf\compiler\java\java_doc_comment.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\google\protobuf\compiler\java\java_doc_comment.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\google\protobuf\compiler\java\java_enum.h"
 				>
 			</File>
@@ -272,15 +264,23 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\google\protobuf\compiler\java\java_doc_comment.h"
+				RelativePath="..\src\google\protobuf\compiler\plugin.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\google\protobuf\compiler\java\java_doc_comment.cc"
+				RelativePath="..\src\google\protobuf\compiler\plugin.pb.h"
 				>
 			</File>
 			<File
 				RelativePath="..\src\google\protobuf\compiler\python\python_generator.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\google\protobuf\compiler\subprocess.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\google\protobuf\compiler\zip_writer.h"
 				>
 			</File>
 		</Filter>
@@ -301,22 +301,6 @@
 			</File>
 			<File
 				RelativePath="..\src\google\protobuf\compiler\command_line_interface.cc"
-				>
-			</File>
-			<File
-				RelativePath="..\src\google\protobuf\compiler\subprocess.cc"
-				>
-			</File>
-      <File
-        RelativePath="..\src\google\protobuf\compiler\zip_writer.cc"
-        >
-      </File>
-			<File
-				RelativePath="..\src\google\protobuf\compiler\plugin.cc"
-				>
-			</File>
-			<File
-				RelativePath="..\src\google\protobuf\compiler\plugin.pb.cc"
 				>
 			</File>
 			<File
@@ -416,7 +400,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\google\protobuf\compiler\plugin.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\google\protobuf\compiler\plugin.pb.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\src\google\protobuf\compiler\python\python_generator.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\google\protobuf\compiler\subprocess.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\google\protobuf\compiler\zip_writer.cc"
 				>
 			</File>
 		</Filter>

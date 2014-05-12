@@ -12,6 +12,21 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "utils", "..\src\utils\utils
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "inilib", "..\src\inilib\inilib.vcproj", "{F5E11B3E-B74E-43E1-93E6-54B329D0891C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libprotobuf", "..\publish\protobuf\vsprojects\libprotobuf.vcproj", "{3E283F37-A4ED-41B7-A3E6-A2D89D131A30}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "protobuf_test", "..\src\protobuf_test\protobuf_test.vcproj", "{B63CBCC2-63A8-4017-B7B2-FE877B239775}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3E283F37-A4ED-41B7-A3E6-A2D89D131A30} = {3E283F37-A4ED-41B7-A3E6-A2D89D131A30}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "protoc", "..\publish\protobuf\vsprojects\protoc.vcproj", "{1738D5F6-ED1E-47E0-B2F0-456864B93C1E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B84FF31A-5F9A-46F8-AB22-DBFC9BECE3BE} = {B84FF31A-5F9A-46F8-AB22-DBFC9BECE3BE}
+		{3E283F37-A4ED-41B7-A3E6-A2D89D131A30} = {3E283F37-A4ED-41B7-A3E6-A2D89D131A30}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libprotoc", "..\publish\protobuf\vsprojects\libprotoc.vcproj", "{B84FF31A-5F9A-46F8-AB22-DBFC9BECE3BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -34,6 +49,22 @@ Global
 		{F5E11B3E-B74E-43E1-93E6-54B329D0891C}.Debug|Win32.Build.0 = Debug|Win32
 		{F5E11B3E-B74E-43E1-93E6-54B329D0891C}.Release|Win32.ActiveCfg = Release|Win32
 		{F5E11B3E-B74E-43E1-93E6-54B329D0891C}.Release|Win32.Build.0 = Release|Win32
+		{3E283F37-A4ED-41B7-A3E6-A2D89D131A30}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3E283F37-A4ED-41B7-A3E6-A2D89D131A30}.Debug|Win32.Build.0 = Debug|Win32
+		{3E283F37-A4ED-41B7-A3E6-A2D89D131A30}.Release|Win32.ActiveCfg = Release|Win32
+		{3E283F37-A4ED-41B7-A3E6-A2D89D131A30}.Release|Win32.Build.0 = Release|Win32
+		{B63CBCC2-63A8-4017-B7B2-FE877B239775}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B63CBCC2-63A8-4017-B7B2-FE877B239775}.Debug|Win32.Build.0 = Debug|Win32
+		{B63CBCC2-63A8-4017-B7B2-FE877B239775}.Release|Win32.ActiveCfg = Release|Win32
+		{B63CBCC2-63A8-4017-B7B2-FE877B239775}.Release|Win32.Build.0 = Release|Win32
+		{1738D5F6-ED1E-47E0-B2F0-456864B93C1E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1738D5F6-ED1E-47E0-B2F0-456864B93C1E}.Debug|Win32.Build.0 = Debug|Win32
+		{1738D5F6-ED1E-47E0-B2F0-456864B93C1E}.Release|Win32.ActiveCfg = Release|Win32
+		{1738D5F6-ED1E-47E0-B2F0-456864B93C1E}.Release|Win32.Build.0 = Release|Win32
+		{B84FF31A-5F9A-46F8-AB22-DBFC9BECE3BE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B84FF31A-5F9A-46F8-AB22-DBFC9BECE3BE}.Debug|Win32.Build.0 = Debug|Win32
+		{B84FF31A-5F9A-46F8-AB22-DBFC9BECE3BE}.Release|Win32.ActiveCfg = Release|Win32
+		{B84FF31A-5F9A-46F8-AB22-DBFC9BECE3BE}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

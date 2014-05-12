@@ -4,8 +4,8 @@
 	Version="8.00"
 	Name="libprotobuf"
 	ProjectGUID="{3E283F37-A4ED-41B7-A3E6-A2D89D131A30}"
+	RootNamespace="libprotobuf"
 	Keyword="Win32Proj"
-	TargetFrameworkVersion="0"
 	>
 	<Platforms>
 		<Platform
@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
-			IntermediateDirectory="Debug"
+			OutputDirectory="..\..\..\output\lib"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
 			>
 			<Tool
@@ -80,8 +80,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
-			IntermediateDirectory="Release"
+			OutputDirectory="..\..\..\output\lib"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
 			>
 			<Tool
@@ -147,6 +147,14 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\src\google\protobuf\stubs\atomicops.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\google\protobuf\stubs\atomicops_internals_x86_msvc.h"
+				>
+			</File>
 			<File
 				RelativePath="..\src\google\protobuf\io\coded_stream.h"
 				>
@@ -216,23 +224,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\google\protobuf\stubs\atomicops.h"
-			>
-			</File>
-			<File
-				RelativePath="..\src\google\protobuf\stubs\atomicops_internals_x86_msvc.h"
-			>
-			</File>
-			<File
-				RelativePath="..\src\google\protobuf\stubs\platform_macros.h"
-			>
-			</File>
-			<File
 				RelativePath="..\src\google\protobuf\stubs\once.h"
 				>
 			</File>
 			<File
 				RelativePath="..\src\google\protobuf\compiler\parser.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\google\protobuf\stubs\platform_macros.h"
 				>
 			</File>
 			<File
@@ -260,14 +260,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\google\protobuf\stubs\template_util.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\google\protobuf\stubs\type_traits.h"
-				>
-			</File>
-			<File
 				RelativePath="..\src\google\protobuf\stubs\strutil.h"
 				>
 			</File>
@@ -276,11 +268,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\google\protobuf\stubs\template_util.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\google\protobuf\text_format.h"
 				>
 			</File>
 			<File
 				RelativePath="..\src\google\protobuf\io\tokenizer.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\google\protobuf\stubs\type_traits.h"
 				>
 			</File>
 			<File
@@ -323,6 +323,10 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
+			<File
+				RelativePath="..\src\google\protobuf\stubs\atomicops_internals_x86_msvc.cc"
+				>
+			</File>
 			<File
 				RelativePath="..\src\google\protobuf\io\coded_stream.cc"
 				>
@@ -384,10 +388,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\google\protobuf\stubs\atomicops_internals_x86_msvc.cc"
-				>
-			</File>
-			<File
 				RelativePath="..\src\google\protobuf\compiler\parser.cc"
 				>
 			</File>
@@ -405,6 +405,10 @@
 			</File>
 			<File
 				RelativePath="..\src\google\protobuf\service.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\google\protobuf\stubs\stringprintf.cc"
 				>
 			</File>
 			<File
@@ -449,10 +453,6 @@
 			</File>
 			<File
 				RelativePath="..\src\google\protobuf\io\zero_copy_stream_impl_lite.cc"
-				>
-			</File>
-			<File
-				RelativePath="..\src\google\protobuf\stubs\stringprintf.cc"
 				>
 			</File>
 		</Filter>

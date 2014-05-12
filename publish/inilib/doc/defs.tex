@@ -1,0 +1,56 @@
+% -*- latex -*-
+%
+This software may only be used by you under license from the
+University of Notre Dame.  A copy of the University of Notre Dame's
+Source Code Agreement is available at the inilib Internet website
+having the URL: <http://inilib.sourceforge.net/license/> If you
+received this software without first entering into a license with the
+University of Notre Dame, you have an infringing copy of this software
+and cannot use it without violating the University of Notre Dame's
+intellectual property rights.
+% 
+% $Id: defs.tex,v 1.1 2000/09/03 19:35:28 bwbarrett Exp $
+%
+
+%VERSION - can you say needs a shell script?  I can.
+\def\version{\input{../VERSION}}
+
+% stuff to make pdflatex be cool, while still being able to make
+% normal postscript file.
+\newif\ifpdf
+\ifx\pdfoutput\undefined
+   \pdffalse
+\else
+   \pdfoutput=1
+   \pdftrue
+\fi
+\ifpdf
+  \usepackage[pdftex,
+              colorlinks=true,
+              linkcolor=blue,filecolor=blue,pagecolor=blue,urlcolor=blue
+              ]{hyperref}
+  \def\figsuffix{pdf}
+\else
+  \newcommand{\href}[2]{\underline{#2}}
+  \def\figsuffix{eps}
+\fi
+
+% stuff for the interface description...
+% Latex magic for word wrapping in fixed-width fonts
+\def\gb{\penalty10000\hskip 0pt plus 8em\penalty4800\hskip 0pt plus-8em%
+\penalty10000}
+% New command to do bindings, and have them wrap properly
+\newcommand{\bind}[1]{{\raggedright \hangindent 7em\hangafter=1\tt
+#1 \par \vspace{0.1in}}} 
+% New command for constants and functions
+\newcommand{\const}[1]{\protect\gb\protect{\small\sf #1}}
+\newcommand{\func}[1]{\protect\gb\protect{\small\sf #1}}
+
+\setlength{\fboxsep}{8pt}
+\newcommand{\mybox}[1]{
+\begin{center}
+\noindent 
+\fbox{\parbox[c][\height][s]{4in}{
+{\tt #1}}}
+\end{center}
+}

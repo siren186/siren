@@ -1,0 +1,345 @@
+% -*- latex -*-
+%
+This software may only be used by you under license from the
+University of Notre Dame.  A copy of the University of Notre Dame's
+Source Code Agreement is available at the inilib Internet website
+having the URL: <http://inilib.sourceforge.net/license/> If you
+received this software without first entering into a license with the
+University of Notre Dame, you have an infringing copy of this software
+and cannot use it without violating the University of Notre Dame's
+intellectual property rights.
+% 
+% $Id: registry.tex,v 1.15 2001/04/17 22:05:45 jsquyres Exp $
+%
+
+\subsection[registry Class]{{\tt registry} Class}
+\label{sec:registry}
+
+As described in Section~\ref{sec:overview}, {\tt inilib} is designed
+such that all access to data must begin with an instance of the
+registry class.  
+
+The {\tt registry} class is directly associated with a filename, which
+will be used to populate the {\tt registry} or save the information in
+the {\tt registry} to disk.  Constructors are provided to populate a
+{\tt registry} immediately upon creation.  In addition, it is possible
+to have a {\tt registry} write itself to disk when its destructor is
+called.
+
+All of the member functions in the {\tt registry} class are summarized
+in Table~\ref{tbl:registry-members}.
+
+\begin{table}[htbp]
+  \begin{center}
+    \leavevmode
+    \begin{tabular}{|l|p{3in}|}
+      \hline
+      \multicolumn{1}{|c|}{Name} & \multicolumn{1}{c|}{Purpose} \\
+      \hline
+      Default constructor & Create an empty registry. \\
+      Copy constructor & Perform a deep copy. \\
+      Other constructor & Associate a filename with the registry, and
+      optionally set read-upon-construction and write-upon-destruction
+      flags. \\
+      Destructor & Destroy the registry and all associated data. \\
+      \hline
+      {\tt operator=} & Assignment operator; clear the registry and
+      perform deep copy.\\
+      {\tt operator+=} & Perform a deep copy/append. \\
+      {\tt operator[]} & Return a {\tt section}. \\
+      {\tt insert} & Insert a new {\tt section}. \\
+      {\tt clear} & Erase all data in the registry. \\
+      {\tt find} & Return an iterator to a {\tt section}. \\
+      {\tt empty} & Return {\tt true} if there are no sections, {\tt
+        false} otherwise. \\
+      {\tt begin} & Return iterator to beginning of the registry. \\
+      {\tt end} & Return iterator past the end of the registry. \\
+      {\tt file\_read} & Read in a specified (or implied) {\tt .ini}
+      file. \\ 
+      {\tt file\_write} & Write out a specific (or implied) {\tt
+        .ini} file. \\
+      {\tt set\_filename} & Associate a filename with the registry. \\
+      {\tt get\_filename} & Get the filename that is associated with
+      the registry. \\
+      {\tt set\_write\_on\_destruct} & Set whether the registry will
+      be written out upon destruction. \\
+      {\tt get\_write\_on\_destruct} & Get whether the registry will
+      be written out upon destruction. \\
+      \hline
+    \end{tabular}
+    \caption{Member functions in the {\tt registry} class.}
+    \label{tbl:registry-members}
+  \end{center}
+\end{table}
+
+\subsubsection{Convenience typedefs}
+
+Since the {\tt registry} class stores its sections in an STL {\tt
+  map}, iterator access is provided to traverse all the sections in a
+{\tt registry}.  To that end, the following typedefs are provided by
+the {\tt registry} class:
+
+\begin{itemize}
+\item {\tt typedef std::map<std::string, section\&>::iterator iterator;}
+\item {\tt typedef std::map<std::string, section\&>::const\_iterator
+const\_iterator}
+\end{itemize}
+
+These typedefs can be used similar to STL iterators.  An example is
+given in Figure~\ref{fig:iterator}.
+
+\begin{figure}[!h]
+\mybox{\#include <iostream> \\
+\#include <string> \\
+\#include "inilib.h" \\
+\\
+using namespace std; \\
+\\
+int \\
+main(int argc, char *argv[]) \\
+\{ \\
+\hspace*{1em}INI::registry reg("user.ini"); \\
+\hspace*{1em}// Populate the registry \\
+\hspace*{1em}reg["window settings"]["width"] = 300; \\
+\hspace*{1em}reg["window settings"]["height"] = 300; \\
+\hspace*{1em}reg["history"]["file1"] = ""; \\
+\hspace*{1em}reg["history"]["file2"] = ""; \\
+\hspace*{1em}reg["history"]["file3"] = ""; \\
+\\
+\hspace*{1em}// print out the name of every section in the \\
+\hspace*{1em}// registry. \\
+\hspace*{1em}for (registry::iterator i = reg.begin() ;  \\
+\hspace*{3.5em}i != reg.end() ; \\
+\hspace*{3.5em}++i) \\
+\hspace*{2em}cout << (*i).first << endl; \\
+\\
+\hspace*{1em}return 0; \\
+\} }
+\caption{Using the iterator typedefs provided by the registry class.}
+\label{fig:iterator}
+\end{figure}
+ 
+
+\subsubsection{Constructors}
+\label{sec:registry:const}
+
+\bind{registry()}
+\bind{registry(const registry\&)}
+\bind{registry(const std::string\& file, bool fileread = true, bool
+  filewrite = true)}
+
+Creates an instance of the {\tt registry} class.  {\tt file} is a
+filename to associate with the instance of {\tt registry}.  If {\tt
+  fileread} is true, the constructor will call {\tt file\_read()}.  If
+{\tt filewrite} is true, the contents of the target {\tt registry}
+will be written to {\tt file} when the destructor is called
+(Section~\ref{sec:registry:dest}).  The associated filename can be
+obtained with the {\tt get\_filename()} method
+(Section~\ref{sec:registry:get_filename}) and changed with the {\tt
+  set\_filename()} method (Section~\ref{sec:registry:set_filename}).
+The behavior of the write on destruct option can also be controlled
+with {\tt get\_write\_on\_destruct()}
+(Section~\ref{sec:registry:get_write}) and {\tt
+  set\_write\_on\_destruct()} methods
+(Section~\ref{sec:registry:set_write}).
+
+\subsubsection{Destructor}
+\label{sec:registry:dest}
+
+\bind{\~{}registry()}
+
+Eliminates the instance of the {\tt registry} class.  All {\tt
+section}s and {\tt attribute}s associated with the particular {\tt
+registry} are destroyed as well.  If {\tt get\_write\_on\_destruct()}
+returns true, the contents of the target {\tt registry} will be saved
+to disk before the instance is deleted.
+
+If the write fails, no notification will be given to the user.
+
+
+\subsubsection{Assignment Operator}
+        
+\bind{registry\& operator=(const registry\& r)}
+
+Assigns {\tt r} to the target registry.  This function first deletes
+all information in the target registry, and makes a deep copy of the
+information from {\tt r}, including the value of the {\tt
+write\_on\_destruct} tag, into the registry.  
+
+A reference to the target {\tt registry} is returned.
+
+
+\subsubsection[operator+=]{{\tt operator+=}}
+\label{code:reg:op_pl_eq}
+
+\bind{registry\& operator+=(const registry\& r)}
+
+Adds the information from {\tt r} to the target registry.  If a
+section in {\tt r} does not exist in the target registry, the section
+will be deep copied into the target (including all attributes in {\tt
+r}).  The value of the {\tt write\_on\_destruct} tag will not be
+copied from {\tt r}.
+
+If a section in {\tt r} already exists in the target registry, all
+attributes from the section in {\tt r} will be deep copied into the
+section in the registry.  If an attribute in the registry exists
+already, the attribute in {\tt r} will overwrite it.
+
+A reference to the target registry is returned.
+
+
+\subsubsection{{\tt operator[]}}
+
+\bind{section\& operator[](const std::string\& key)}
+
+Returns section referenced by key {\tt key} from the registry.  If the key
+{\tt key} does not already exist in the registry, an empty section is
+created, stored in the registry (which can be accessed in the future
+by the key {\tt key}), and a reference to it is returned.
+
+
+\subsubsection[insert]{{\tt insert}}
+
+\bind{void insert(const std::string\& key, const section\& sec)}
+\bind{void insert(const registry\& r)}
+
+Inserts information into the target registry by deep copying the
+source information.
+
+If {\tt r} is passed to the function, {\tt insert} works in the same
+way as {\tt operator+=} (see Section~\ref{code:reg:op_pl_eq}).
+
+If {\tt key}, {\tt sec} are passed to the function, {\tt insert} adds
+the section's information to the target registry.  If {\tt key} does
+not exist in the registry, it will be created.  If it does exist, all
+attributes will be copied into the existing section.  If a section
+already exists with key {\tt key}, {\tt section::operator+=}
+(Section~\ref{code:sec:op_pl_eq}) is used to combine the two sections.
+
+
+\subsubsection[clear]{{\tt clear}}
+
+\bind{void clear()}
+
+Removes all information from the registry.  All sections (and all
+attributes in each section) are deleted.
+
+
+\subsubsection[find]{{\tt find}}
+\label{code:reg:find}
+
+\bind{iterator find(const std::string\& key)}
+
+Returns an iterator pointing to a (name, section) pair with name {\tt
+  key}.
+%
+The section name is the {\tt first} element of the pair, and is a
+{\tt std::string}; the {\tt second} element of the pair is a reference
+to the {\tt section} of that name.
+%
+If there is no section in the registry with the name {\tt key}, an
+iterator equal to {\tt registry::end()} (see
+Section~\ref{code:reg:end}) is returned.
+
+
+\subsubsection[empty]{{\tt empty}}
+
+\bind{bool empty()}
+
+Returns {\tt true} if there are no sections in the target registry,
+{\tt false} otherwise.
+
+
+\subsubsection[begin]{{\tt begin}}
+
+\bind{iterator begin()}
+
+Returns the iterator returned by the underlying {\tt std::map}'s {\tt
+begin()} function.  
+%
+The iterator points to (name, section) pairs, as described in the {\tt
+  find()} function (Section~\ref{code:reg:find}).
+
+
+\subsubsection[end]{{\tt end}}
+\label{code:reg:end}
+
+\bind{iterator end()}
+
+Returns the iterator returned by the underlying {\tt std::map}'s {\tt
+end()} function.
+
+
+\subsubsection[file\_read]{{\tt file\_read}}
+
+\bind{bool file\_read()}
+\bind{bool file\_read(const std::string\& filename)}
+
+If no argument is provided, attempts to read the file associated with
+the target registry, either through the constructors
+(Section~\ref{sec:registry:const}) or {\tt set\_filename()}
+(Section~\ref{sec:registry:set_filename}).
+
+If an argument is provided, populates the registry with data found in
+the specified file.
+
+In both cases, information from the file is {\em appended} to the
+target registry.  Any attributes contained in both the registry and
+the file will be overwritten with the values from the file.  If a
+section is not already in the target registry, it will be added to the
+target registry.  Likewise, if an attribute is not already in the
+registry, it will be added.  See Section~\ref{sec:overview} for an in-depth
+explanation of the underlying implementation of attributes.
+
+Returns {\tt true} on success, {\tt false} otherwise.
+
+\subsubsection[file\_write]{{\tt file\_write}}
+
+\bind{bool file\_write()}
+\bind{bool file\_write(const std::string\& filename)}
+
+If no argument is provided, attempt to write to the filename
+associated with the target registry (either through the constructors
+(Section~\ref{sec:registry:const}) or {\tt set\_filename()}
+(Section~\ref{sec:registry:set_filename}).
+
+If the filename argument is provided, output the data contained in the
+registry to the specified file.  Any information already in the file
+will be overwritten.
+
+Returns true on success, false otherwise.
+
+\subsubsection[set\_filename]{{\tt set\_filename}}
+\label{sec:registry:set_filename}
+
+\bind{void set\_filename(const std::string\& name)}
+
+Changes the filename associated with the target registry to {\tt name}.
+
+
+\subsubsection[get\_filename]{{\tt get\_filename}}
+\label{sec:registry:get_filename}
+
+\bind{std::string get\_filename()}
+
+Returns a string containing the filename currently associated with the
+target registry.
+
+
+\subsubsection[set\_write\_on\_destruct]{{\tt set\_write\_on\_destruct()}}
+\label{sec:registry:set_write}
+void \bind{set\_write\_on\_destruct(bool value)}
+
+If {\tt value} is true, the target registry will attempt to write
+itself to the file associated with it upon destruction.  If {\tt
+value} is false, it will not attempt to write itself on destruction.
+
+
+\subsubsection[get\_write\_on\_destruct]{{\tt get\_write\_on\_destruct()}}
+\label{sec:registry:get_write}
+
+\bind{bool get\_write\_on\_destruct()}
+
+Returns {\tt true} if the target registry will attempt to write itself
+to the file associated with it upon destruction.  Returns {\tt false}
+otherwise.

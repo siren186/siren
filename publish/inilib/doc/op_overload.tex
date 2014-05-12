@@ -1,0 +1,260 @@
+% -*- latex -*-
+%
+This software may only be used by you under license from the
+University of Notre Dame.  A copy of the University of Notre Dame's
+Source Code Agreement is available at the inilib Internet website
+having the URL: <http://inilib.sourceforge.net/license/> If you
+received this software without first entering into a license with the
+University of Notre Dame, you have an infringing copy of this software
+and cannot use it without violating the University of Notre Dame's
+intellectual property rights.
+% 
+% $Id: op_overload.tex,v 1.7 2000/09/04 01:20:46 bwbarrett Exp $
+%
+
+\subsection{Attribute Operator Overloading}
+\label{sec:op_overload}
+
+Due to the overloading of casting operators for the attribute classes
+(allowing an attribute to be cast to one of {\tt bool}, {\tt double},
+{\tt int}, or {\tt std::string}), compiler ambiguities can arise.  Two
+solutions to the problem of compiler ambiguties exist.  The first is
+to require the programmer to explicitly cast the attribute in any
+operation that may result in a compiler ambiguity.  This option
+requires more work for the programmer, which is not what a library
+should do.  The second option is to overload the most common operators
+for the attribute class, eliminating any compiler ambiguities that may
+arise.  The second option is obviously a better solution for the
+programmer, and is therefore implemented in {\tt inilib}.
+Table~\ref{tbl:overloaded} provides a listing of the operators
+overloaded in {\tt inilib}.
+
+\begin{table}
+  \begin{center}
+    \begin{tabular}[ht!]{| l | l |} \hline
+      pre increment & ++lvalue \\ \hline
+      pre decrement & -{}-{}lvalue \\ \hline
+      not & !expr \\ \hline
+      unary minus & -expr \\ \hline
+      multiply & expr * expr \\ \hline
+      divide & expr / expr \\ \hline
+      modulo & expr \% expr \\ \hline
+      add (plus) & expr + expr \\ \hline
+      subtract (minus) & expr - expr \\ \hline
+      less than & expr $<$ expr \\ \hline
+      less than or equal & expr $<$= expr \\ \hline
+      greater than & expr $>$ expr \\ \hline
+      greater than or equal & expr $>$= expr \\ \hline
+      equal & expr ={}={} expr \\ \hline
+      not equal & expr !={} expr \\ \hline
+      multiply and assign & lvalue *= expr \\ \hline
+      divide and assign & lvalue /= expr \\ \hline
+      module and assign & lvalue \%= expr \\ \hline
+      add and assign & lvalue += expr \\ \hline
+      subtract and assign & lvalue -= expr \\ \hline
+    \end{tabular}
+  \end{center}
+  \caption{Overloaded operators provided by {\tt inilib}.}
+  \label{tbl:overloaded}
+\end{table}
+
+\subsubsection{Binary Operators}
+
+The overloaded binary operators fall into two categories: {\tt
+  attribute}/{\sc Datatype} functions and {\tt attribute}/{\tt
+  attribute} functions.  The {\tt attribute}/{\sc Datatype} functions
+will cast the {\tt attribute} to the same type as the other argument
+and then perform the operation.
+
+The {\tt attribute}/{\tt attribute} binary operators do not have an
+implied type to cast to, as an {\tt attribute} can be cast to any one
+of {\tt bool}, {\tt double}, {\tt int}, or {\tt std::string}.
+Therefore, the {\tt attribute}/{\tt attribute} functions use the
+following hierarchy for casting (listed from lowest to highest):
+
+\begin{enumerate}
+\item {\tt std::string}
+\item {\tt bool}
+\item {\tt int}
+\item {\tt double}
+\end{enumerate}
+
+The {\tt attribute} with the higher type acording to the hierarchy
+will be cast to the type of the other {\tt attribute}.  For example,
+if the comparison operator is called on a {\tt string\_attribute} and
+{\tt double\_attribute}, the casting operator will be used to cast
+both attributes to type {\tt double}, then the operation will be
+performed.  Although an arbitrary hierarchy, it is used because it is
+similar to the one used by Perl and PHP to control casting from one
+type to another.
+
+The {\tt attribute}/{\tt attribute} binary arithmetic operators create
+a temporary attribute of the appropriate type (as discussed in the
+previous paragraph) and use the arithmentic operation and assign
+member functions to perform the arithmetic operation.  Therefore, the
+behavior of the {\tt attribute}/{\tt attribute} binary arithmetic
+operators is determined by the operation of the member arithmetic
+operation.
+
+\subsubsection{Unary Operators}
+
+The unary operators are all member functions of the {\tt attribute}
+class.  Some of the unary operators (pre increment, for instance), are
+not defined in C/C++ for some data types ({double}, in the case of the
+pre increment operator).  However it would be inconvienent not to have
+the operators defined for all four types used by {\tt inilib}.
+Table~\ref{tbl:unaryops} describes the result of many unary operators
+when called on an {\tt attribute}.  The action of these operators is
+intended to mimic Perl and PHP as closely as possible.\footnote{The one
+  exception is integer and string addition.  The incrementing of the
+  alphanumerical string is not supported in {\tt inilib}}
+
+The post-increment and post-decrement operators are not provided, as it
+is not possible to return an object of type {\tt attribute}, which
+would be required for the post-increment and post-decrement operators.
+
+\begin{center}
+  \begin{longtable}[!ht]{ | p{.82in} | p{.82in} | p{.82in} | p{.82in} | p{1.4in} |}
+    \caption{Behavior of unary operators overloaded in {\tt inilib}.
+      \protect}
+    \label{tbl:unaryops} \\
+    \hline
+    & \multicolumn{4}{| c |}{{\tt attribute} type} \\ 
+    & \multicolumn{1}{|c|}{{\tt bool}} & \multicolumn{1}{c|}{{\tt
+    double}} & \multicolumn{1}{c|}{{\tt int}} &
+    \multicolumn{1}{c|}{{\tt std::string}} \\ 
+    \hline 
+    \endfirsthead % Everything above goes at the top of the 1st page only
+    \caption[]{(cont.)} \\
+    \hline
+    & \multicolumn{1}{|c|}{{\tt bool}} & \multicolumn{1}{c|}{{\tt
+    double}} & \multicolumn{1}{c|}{{\tt int}} &
+    \multicolumn{1}{c|}{{\tt std::string}} \\ 
+    \hline 
+    \endhead % Everything above here (and below the \endfirsthead) goes at the top
+                                % of continuation pages.  The [] argument prevents a duplicate
+                                % entry from appearing in the table of contents.
+    \hline
+    \multicolumn{5}{|r|}{\textit{continued}\ldots} \\
+    \hline
+    \endfoot % The above section goes at the bottom of continuation pages
+    \hline
+    \endlastfoot % The very last bottom of the table
+    \hline
+    
+    pre increment & 
+    sets the value of the attribute to {\tt true} and
+    returns the new value & 
+    adds {\tt 1} to the value of the attribute and returns the new
+    value & 
+    adds {\tt 1} to the value of the attribute and returns the new
+    value & 
+    If the value of the attibute is an int or double,\footnote{Meaning it
+      contains a string of the form dddd or ddd.ddd, where d is a decimal
+      digit, with an arbitrary number of digits.} the value is cast to
+    that type and {\tt 1} is added to the value.  The result is converted
+    back to a string.  The resulting string is assigned to the attribute
+    and returned. \\ \hline
+    
+    pre decrement & 
+    sets the value of the attribute to {\tt false} and returns the new
+    value & 
+    subtracts {\tt 1} from the value of the attribute and returns
+    the new value & 
+    subtracts {\tt 1} from the value of the attribute and returns
+    the new value & 
+    if the value of the attibute is an int or double, the value is
+    cast to that type and {\tt 1} is subtracted from the value.  The
+    result is converted back to a string.  The resulting string is
+    assigned to the attribute and returned. \\ \hline
+    
+    not &
+    returns {\tt true} if value is {\tt false}, returns {\tt false}
+    if the value is {\tt true} & 
+    returns {\tt true} if the value is {\tt 0}, returns {\tt false}
+    otherwise & 
+    returns {\tt true} if the value is {\tt 0}, {\tt false} otherwise &
+    returns {\tt true} if the string is empty, {\tt false} otherwise \\
+    \hline
+    
+    unary minus & 
+    same as {\tt not} & 
+    returns value, but with sign reversed & 
+    returns value, but with sign reversed & 
+    if the string contains only a number (integer or decimal), 
+    returns the value as a string, but with a `-' prepended.  Otherwise,
+    returns the current value \\ \hline
+    
+    multiply and assign & 
+    casts argument to {\tt bool} and performs a logical {\tt and},
+    returning the result and assigning it to the attribute & 
+    casts argument to {\tt int} and multiplies, returning the result and
+    assigning it to the attribute &
+    casts argument to {\tt double} and multiplies, returning the result
+    and assigning it to the attribute &
+    If the argument is a {\tt bool}, {\tt double}, or {\tt int}, casts
+    attribute to that type and performs the multiplication.  The result
+    is converted back to a string, returned, and assigned to the
+    attribute.  If the argument is a string, the {\tt std::string}'s +
+    operator is used.  If the argument is an attribute, the action is as
+    above, based on the underlying type. \\ \hline
+    
+    divide and assign & 
+    casts argument to {\tt bool} and performs a logical {\tt or},
+    returning the result and assigning it to the attribute &
+    casts argument to {\tt int} and divides, returning the result and
+    assigning it to the attribute &
+    casts argument to {\tt double} and divides, returning the result and
+    assigning it to the attribute &
+    If the argument is a {\tt bool}, {\tt double}, or {\tt int}, casts
+    attribute to that type and performs the division.  The result
+    is converted back to a string, returned, and assigned to the
+    attribute.  If the argument is a string, the operation returns the
+    current string.  If the argument is an attribute, the action is as
+    above, based on the underlying type. \\ \hline
+    
+    modulo and assign &
+    casts argument to {\tt bool} and performs a logical {\tt and},
+    returning the result and assigning it to the attribute &
+    casts argument to {\tt int} and performs modulo operation, returning
+    the result and assining it to the attribute. &
+    casts argument and value to {\tt int} and performs modulo
+    operation.  Result is cast back to a {\tt double} & 
+    If the argument is a {\tt bool}, {\tt double}, or {\tt int}, casts
+    attribute to that type and performs the modulo, using the rules
+    specified for the {\tt bool}, {\tt double}, and {\tt int} attributes.
+    The result is converted back to a string, returned, and assigned to the
+    attribute.  If the argument is a string, the operation returns the
+    current string.  If the argument is an attribute, the action is as
+    above, based on the underlying type. \\ \hline
+    
+    add and assign & 
+    casts argument to {\tt bool} and performs a logical {\tt
+      or}, returning the reuslt and assigning it to the attribute & 
+    casts argument to {\tt int} and adds, returning the result and
+    assigning it to the attribute &
+    casts argument to {\tt double} and adds, returning the result and
+    assigning it to the attribute &
+    If the argument is a {\tt bool}, {\tt double}, or {\tt int}, casts
+    attribute to that type and performs the addition.  The result
+    is converted back to a string, returned, and assigned to the
+    attribute.  If the argument is a string, the operation returns the
+    current string.  If the argument is an attribute, the action is as
+    above, based on the underlying type. \\ \hline
+
+    subtract and assign & 
+    casts argument to {\tt bool} and performs a logical {\tt and},
+    returing the result and assigning it to the attribute &
+    casts argument to {\tt int} and subtracts, returning the result and
+    assigning it to the attribute &
+    casts argument to {\tt double} and subtracts, returning the result
+    and assigning it to the attribute &
+    If the argument is a {\tt bool}, {\tt double}, or {\tt int}, casts
+    attribute to that type and performs the subtraction.  The result
+    is converted back to a string, returned, and assigned to the
+    attribute.  If the argument is a string, the operation returns the
+    current string.  If the argument is an attribute, the action is as
+    above, based on the underlying type. \\ \hline
+
+  \end{longtable}
+\end{center}

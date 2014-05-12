@@ -1,0 +1,153 @@
+% -*- latex -*-
+%
+This software may only be used by you under license from the
+University of Notre Dame.  A copy of the University of Notre Dame's
+Source Code Agreement is available at the inilib Internet website
+having the URL: <http://inilib.sourceforge.net/license/> If you
+received this software without first entering into a license with the
+University of Notre Dame, you have an infringing copy of this software
+and cannot use it without violating the University of Notre Dame's
+intellectual property rights.
+% 
+% $Id: using.tex,v 1.7 2000/09/04 01:20:46 bwbarrett Exp $
+%
+
+\section[Using inilib]{Using {\tt inilib}}
+
+This section contains information on obtaining {\tt inilib},
+installing it, and getting help if something goes wrong.  In addition,
+this section describes the coding standards maintained in the creation
+of {\tt inilib}.
+
+\subsection[Obtaining inilib]{Obtaining {\tt inilib}}
+The source code for {\tt inilib} is available from the project's
+homepage:
+
+\begin{center}
+{\tt http://inilib.sourceforge.net/}
+\end{center}
+
+Packages containing the official, supported releases are available
+from the web page, as well as CVS access for the most current code.
+The CVS code -- unless otherwise noted -- should be considered
+unstable, and may not function as intended, and may therefore break
+your applications.
+
+The official {\tt inilib} distribution contains the source code in
+{\tt src/}, as well as a comprehensive test suite that can be found at
+{\tt contrib/test\_suite/} and usage examples in {\tt
+contrib/examples/}.  The test suite is discussed in
+Section~\ref{sec:codestd}.  The usage examples contain extensive
+comments on the usage of {\tt inilib}.  In addition, the documentation
+for {\tt inilib} is available in the {\tt doc/} directory of the
+distribution and on the project's home page.
+
+\subsection[Installing inilib]{Installing {\tt inilib}}
+
+{\tt inilib} uses the GNU {\tt autoconf} and {\tt automake} utilities
+to create a build process that works across all tested platforms.  In
+addition, it may work on platforms that are not tested or supported.
+For most cases, the build process is as simple as:
+
+\begin{verbatim}
+% ./configure
+% make
+% make examples
+% cd contrib/test_suite ; ./inilib_test ; cd ../..
+% make install
+\end{verbatim}
+
+The {\tt make examples} and {\tt ./inilib\_test} steps are optional,
+but it is recommended you use them.  For file access reasons, you must
+be in the same directory as the {\tt inilib\_test} binary and {\tt
+test.ini} file in order to run the test suite.
+
+C++ does not enjoy the same standard methodology of building static
+libraries across different platforms and compilers like C does.
+Indeed, for C libraries, the use of {\tt ar}(1) and (sometimes) {\tt
+  ranlib}(1) is all that is required.  However, C++ functions
+(particularly where templates are involved) may require multiple
+passes from the compiler before a usable library can be produced.
+There is currently no uniform manner to produce C++ libraries across
+platforms/compilers.   It is hoped that the next release of the GNU
+{\tt libtool} project will address this issue.  Until then, only the
+platforms and compilers listed in Table~\ref{tbl:supported} are
+supported for use with inilib.  
+
+If your compiler is not listed, it is quite possible that your it will
+work properly with inilib -- it should be a fairly straightforward
+task to modify {\tt configure.in} for the right library compilation
+hooks for your C++ compiler.
+
+\subsection{Getting Help}
+
+Thanks to SourceForge, bug tracking and reporting software and mailing
+lists are available from the {\tt inilib} homepage.  The authors of
+{\tt inilib} are Brian Barrett and Jeff Squyres.  To contact the
+authors about a problem with {\tt inilib}, please use the support
+listserv, {\tt inilib-support@lists.sourceforge.net}.  
+
+There is also a development list, {\tt
+inlib-devel@lists.sourceforge.net}.
+
+ 
+\subsection{Coding Standards}
+\label{sec:codestd}
+
+{\tt inilib} was developed under a fairly stringent set of standards
+that should ensure proper functionality.
+
+The primary development environment for {\tt inilib} is Sun Solaris
+2.6 (UltraSparc) using the Sun Workshop 5.0 compilers.  All releases
+are verified to be free of memory leaks,\footnote{Free from avoidable
+  memory leaks.  The Workshop 5.0 STL implementation has a few small
+  memory leaks in the iostream implementation, so {\tt bcheck} will
+  find some memory leaks in {\tt inilib}.} using {\tt bcheck}, a
+memory checker that is part of the Workshop compiler suite.
+
+In addition to being free of memory leaks, {\tt inilib} releases will
+compile without warnings on all supported platforms using all
+supported compilers.  GNU extenstions and non-standard extensions to
+the STL will not be used, to increase portability.
+
+A comprehensive test suite is included with the {\tt inilib} source.
+It can be found in the {\tt contrib/test\_suite} directory.  This test
+suite is intended to test the entire {\tt inilib} product for proper
+functionality.  All releases canidates will be verified using the test
+suite on all supported platform/compiler combinations (See
+Section~\ref{sec:supported}) before being released.
+
+\subsection{Supported Platforms}
+\label{sec:supported}
+
+Table~\ref{tbl:supported} shows the platform/compiler combinations
+have been tested and are supported by {\tt inilib}.  Other platforms
+may work, but may require some modifications to the build script.
+{\tt g++ 2.95.2} may provide the easiest porting, as its C++ library
+build process is the same as the standard C library build process.
+
+\begin{table}
+  \begin{center}
+    \begin{tabular}[hb!]{| l | l |} 
+      \hline
+      \multicolumn{1}{|c|}{Platform} & \multicolumn{1}{c|}{Compiler}
+      \\
+      \hline
+      Solaris 2.6 (Sparc)    & Workshop 5.0 CC \\
+      & KCC 3.4f \\
+      & g++ 2.95.2 \\ \hline
+      Solaris 7 (Sparc)      & Workshop 5.0 CC \\
+      & KCC 3.4f \\
+      & g++ 2.95.2 \\ \hline
+      x86 Linux (RedHat 6.2) & KCC 3.4f \\
+      & g++ 2.95.2 \\ \hline
+      MIPS Irix              & Irix CC \\
+      & KCC 3.4f \\
+      & g++ 2.95.2 \\ \hline
+    \end{tabular}
+  \end{center}
+  \caption{Platform / compiler combinations supported by {\tt inilib.}}
+  \label{tbl:supported}
+\end{table}
+
+

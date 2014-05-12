@@ -1,0 +1,109 @@
+% -*- latex -*-
+%
+This software may only be used by you under license from the
+University of Notre Dame.  A copy of the University of Notre Dame's
+Source Code Agreement is available at the inilib Internet website
+having the URL: <http://inilib.sourceforge.net/license/> If you
+received this software without first entering into a license with the
+University of Notre Dame, you have an infringing copy of this software
+and cannot use it without violating the University of Notre Dame's
+intellectual property rights.
+% 
+% $Id: overview.tex,v 1.10 2000/09/04 01:20:46 bwbarrett Exp $
+%
+
+\section[inilib Overview]{{\tt inilib} Overview}
+\label{sec:overview}
+
+The library implements a three-level hierarchy of {\tt registry}
+$\rightarrow$ {\tt section} $\rightarrow$ {\tt attribute}.  A {\tt
+registry} contains zero or more {\tt section}s.  A {\tt section}
+contains zero or more {\tt attribute}s.  Each {\tt attribute} is a
+single (key, value) pair.  To avoid name conflicts, the entire {\tt
+inilib} package is in the {\tt INI} namespace.
+
+The {\tt registry} is the top-most level of the data structure.  It
+provides methods for accessing the sections it contains, as well as
+reading and writing its sections from disk.  The {\tt section} class
+provides access to its attributes.  Attributes are classes that
+actually contain the data to be stored.  To access a particular
+attribute, the programmer would use the syntax (where {\tt
+section\_name} and {\tt attribute\_name} are both of type {\tt
+std::string}):
+
+\begin{verbatim}
+     registry_name[section_name][attribute_name]
+\end{verbatim}
+
+Attributes can store of the following C/C++ types: {\tt
+  double}, {\tt int}, {\tt std::string}, and {\tt bool}.  The
+interface is designed to mimic the STL {\tt map}~\cite{STL} as closely
+as possible.
+
+The {\tt registry} class provides an interface to the sections stored
+in the program.  Sections can be added by using {\tt operator[]()} or
+{\tt insert()}, similar to the way a new element is added to an STL
+{\tt map}.  {\tt operator[]()} can be used to retrieve a section.
+Iterators are provided to traverse the sections contained in the
+registry.  An STL-like {\tt find()} function is also provided to
+locate a specific section.  Finally, {\tt file\_read()} and {\tt
+  file\_write()} read and write all of the registry's sections.
+
+The {\tt section} class operates in a manner similar to the {\tt
+  registry} class, with the exception that it does not contain the
+  file functions found in the registry class.
+
+The attributes, which actually store data for the user, provide
+interfaces for assignment (by overloading of {\tt operator=()}) from
+any of the C/C++ types {\tt bool}, {\tt double}, {\tt int}, and {\tt
+std::string}.  In addition, attributes can be cast to any of these
+types.  The common unary and binary operators are overloaded for the
+{\tt attribute} class in order to remove any possible compiler
+ambiguities that might arise.  Section~\ref{sec:op_overload} provides
+more information on the overloaded operators.
+
+Figure~\ref{fig:sample_program} provides a brief example of the
+general use of {\tt inilib}.  The program will create a {\tt registry}
+and populate it with the default values for the sample text editor
+from Section~\ref{sec:Introduction}.  The file {\tt options.ini} is
+then loaded to import the user's options into the {\tt registry}.
+The program then demonstrates changing an {\tt attribute}'s value.
+
+\begin{figure}[!h]
+\mybox{\#include <iostream> \\
+\#include <string> \\
+\#include "inilib.h" \\
+\\
+using namespace std; \\
+\\
+int \\
+main(int argc, char *argv[]) \\
+$\{$ \\
+\hspace*{1em}INI::registry information("user.ini", false, true); \\
+\\
+\hspace*{1em}// Provide default values for many of the fields. \\
+\hspace*{1em}information["window settings"]["width"] = 300; \\
+\hspace*{1em}information["window settings"]["height"] = 300; \\
+\hspace*{1em}information["history"]["file1"] = ""; \\
+\hspace*{1em}information["history"]["file2"] = ""; \\
+\hspace*{1em}information["history"]["file3"] = ""; \\
+\\
+\hspace*{1em}// Now, load the user's information \\
+\hspace*{1em}information.file\_read(); \\
+\\
+\hspace*{1em}// And pretend the user just changed the screen width \\
+\hspace*{1em}information["window settings"]["width"] = new\_width; \\
+\\
+\hspace*{1em}return 0; \\
+\hspace*{1em}// Note that the registry is written out upon exit \\
+$\}$ }
+\caption{A sample program loading data from a file.}
+\label{fig:sample_program}
+\end{figure}
+
+Figure~\ref{fig:sample_program} also demonstrates the connection
+between a file and a registry.  The constructor associates the
+filename {\tt user.ini} with {\tt information}, and instructs {\tt
+inilib} not to load the information in {\tt user.ini} immediately, but
+to write the {\tt registry} to {\tt user.ini} when the destructor is
+called.  The topic is covered further in Section~\ref{sec:registry}.

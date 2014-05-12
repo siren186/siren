@@ -1,0 +1,12 @@
+inline %%rtype%%
+operator%%operator%%(const INI::attribute& a, %%type%% b)
+{
+  return ((%%type%%) a %%operator%% b);
+}
+
+inline %%rtype%%
+operator%%operator%%(%%type%%& a, const INI::attribute& b)
+{
+  return (a %%operator%% (%%type%%) b);
+}
+

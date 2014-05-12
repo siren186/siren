@@ -1,0 +1,120 @@
+% -*- latex -*-
+%
+This software may only be used by you under license from the
+University of Notre Dame.  A copy of the University of Notre Dame's
+Source Code Agreement is available at the inilib Internet website
+having the URL: <http://inilib.sourceforge.net/license/> If you
+received this software without first entering into a license with the
+University of Notre Dame, you have an infringing copy of this software
+and cannot use it without violating the University of Notre Dame's
+intellectual property rights.
+% 
+% $Id: implementation.tex,v 1.8 2000/09/04 01:20:46 bwbarrett Exp $
+%
+
+\section{Implementation}
+
+\subsection[registry and section]{{\tt registry} and {\tt section}}
+
+The {\tt registry} and {\tt section} classes each contain an STL {\tt
+  map} with {\tt (std::string)} type for keys and values of type {\tt
+  (section*)} and {\tt (attribute*)}, respectively.  The {\tt
+  operator[]()}, {\tt insert()}, and {\tt clear()} functions provided
+by {\tt registry} and {\tt section} perform error checking then call
+the corresponding {\tt map} functions.  All functions in the two
+classes, except for the file access functions {\tt file\_\-read()} and
+{\tt file\_\-write()}, are inlined to increase the performance of the
+library.
+
+\subsection[attribute]{\tt attribute}
+\label{sec:implementation:attribute}
+
+The implementation of attributes is slightly more interesting than
+that of the {\tt registry} and {\tt section}.  There is a base class,
+{\tt attribute}, from which five other classes are derived:
+
+\begin{enumerate}
+\item {\tt bool\_\-attribute}
+\item {\tt double\_\-attribute}
+\item {\tt int\_\-attribute}
+\item {\tt string\_\-attribute}
+\end{enumerate}
+
+The four derived classes, {\tt bool\_\-attribute}, {\tt
+  double\_\-attribute}, {\tt int\_\-attribute}, and {\tt
+  string\_\-attribute} (page~\pageref{sec:attribute}), are very
+similar.  They provide casting operators to {\tt bool}, {\tt double},
+{\tt int}, and {\tt std::string}, as well as {\tt operator=()} from these
+four types.  This allows the seamless assignment and casting of any
+attribute type to any other attribute type, similar to the
+Perl~\cite{perl} and PHP~\cite{php} scripting languages.
+
+The attribute class is used in situations where the type of the
+attribute is not known at the time the attribute is created, for the
+return type of many of the overloaded operators, and for storage in
+the {\tt section} class.  The {\tt attribute} class provides the same
+interface as the four classes that derive from it.  However, instead
+of containing an actual data value, the {\tt attribute} class contains
+a pointer to one of the other four classes.  The interaction between
+the {\tt attribute} class and the derived classes is completely
+transparent to the programmer.
+
+The library is intended to be used in a situation where the programmer
+provides a set of default attributes and values within the program.
+When reading attributes from a file, entries from the file override
+the values in memory.  However, the file value's type is assumed to be
+the same as the attribute in the memory.  If an attribute exists in
+the file being loaded, but is not already in memory, the parser must
+make a best-guess as to the type of {\tt attribute} to create.  If the
+value is whitespace, followed by an optional {\tt +} or {\tt -}, a
+series decimal digits, a decimal point, then a series of decimal
+digits, followed by any amount of whitespace, {\tt inilib} will
+consider the value to be of type {\tt double}.  If the value is any
+amount of whitespace, followed by one or more decimal digits, followed
+by any amount of whitespace, {\tt inilib} will consider the value to
+be of type {\tt int}.  Otherwise, {\tt inilib} will consider the value
+to be of type {\tt std::string}.
+
+\subsubsection{Data Type Conversion}
+\label{sec:conversions}
+
+Whenever possible, conversion from one data type to another is handled
+by casting to the desired data type.  For example, the conversion
+between from an {\tt int} to {\tt bool} is handled by calling {\tt
+(bool) value}.  In certain circumstances, a cast will not produce the
+desired result, such as casting a {\tt std::string} to a {\tt
+double}.  Table~\ref{tbl:conversions} details the conversions used in
+{\tt inilib}.
+
+\begin{table}
+  \begin{center}
+    \begin{tabular}[ht!]{| l | p{.9in} | p{.9in} | p{.9in} | p{.9in} |} 
+      \hline
+      & \multicolumn{4}{| c |}{Casting from} \\ 
+      \multicolumn{1}{|c|}{Casting to} & \multicolumn{1}{c|}{{\tt bool}} & 
+      \multicolumn{1}{c|}{{\tt double}} & \multicolumn{1}{c|}{{\tt int}} &
+      \multicolumn{1}{c|}{{\tt std::string}} \\ 
+      \hline
+      
+      {\tt bool} & NA & {\tt (bool) value} & {\tt (bool) value} & {\tt false}
+      if string is empty, {\tt true} otherwise. \\ 
+      \hline
+      
+      {\tt double} & {\tt (double) value} & NA & {\tt (double) value}
+        & {\tt atof(value)} \\ 
+      \hline
+      
+      {\tt int} & {\tt (int) value} & {\tt (int) value} & NA & {\tt
+      atoi(value)} \\ 
+      \hline
+      
+      {\tt std::string} & ``true'' if {\tt value} is true, empty string
+      otherwise & {\tt sprintf(ret, ``\%.{\sc Precision}lf'', value)} &
+      {\tt sprintf(ret, ``\%.{\sc Precision}lf'', value)} & NA \\  
+      \hline
+    \end{tabular}
+  \end{center}
+  \caption{Conversion behavior in {\tt inilib}}
+  \label{tbl:conversions}
+\end{table}
+

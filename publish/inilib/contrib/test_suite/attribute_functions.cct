@@ -1,0 +1,174 @@
+// -*- c++ -*-
+//
+// $COPYRIGHT$
+//
+// $Id: attribute_functions.cct,v 1.2 2005/03/10 18:13:11 bwbarrett Exp $
+//
+// Tests commands available in the various attribute classes.
+//
+
+#include "inilib.h"
+#include "inilib_test.h"
+
+#include <string>
+#include <iostream>
+
+template <class Attr, class Type >
+bool
+attribute_cast_int(Attr attribute1, Type answer)
+{
+  bool value = true;
+  
+  Testing("Attribute::int()");
+
+  if ((int) attribute1 == (int) answer) {
+    Pass();
+  } else {
+    value = false;
+    Fail();
+  }
+  
+  return value;
+}
+
+
+template <class Attr, class Type >
+bool
+attribute_cast_double(Attr attribute1, Type answer)
+{
+  bool value = true;
+  
+  Testing("Attribute::double()");
+
+  if ((double) attribute1 == (double) answer) {
+    Pass();
+  } else {
+    value = false;
+    Fail();
+  }
+  
+  return value;
+}
+
+
+template <class Attr, class Type >
+bool
+attribute_cast_string(Attr attribute1, Type answer)
+{
+  bool value = true;
+  
+  Testing("Attribute::string()");
+
+  if ((std::string) attribute1 == (std::string) answer) {
+    Pass();
+  } else {
+    value = false;
+    Fail();
+  }
+  
+  return value;
+}
+
+
+template <class Attr, class Type >
+bool
+attribute_cast_bool(Attr attribute1, Type answer)
+{
+  bool value = true;
+  
+  Testing("Attribute::bool()");
+
+  if ((bool) attribute1 == (bool) answer) {
+    Pass();
+  } else {
+    value = false;
+    Fail();
+  }
+  
+  return value;
+}
+
+
+template < class Attr >
+bool
+attribute_assignment_int(Attr attribute1, int input, int answer)
+{
+  bool value = true;
+  
+  Testing("Attribute::=(int)");
+
+  attribute1 = input;
+  
+  if ((int) attribute1 ==  answer)
+    Pass();
+  else {
+    value = false;
+    Fail();
+  }
+
+  return value;
+}
+
+
+template < class Attr >
+bool
+attribute_assignment_double(Attr attribute1, double input, double answer)
+{
+  bool value = true;
+  
+  Testing("Attribute::=(double)");
+
+  attribute1 = input;
+  
+  if ((double) attribute1 ==  answer)
+    Pass();
+  else {
+    value = false;
+    Fail();
+  }
+
+  return value;
+}
+
+
+template < class Attr >
+bool
+attribute_assignment_string(Attr attribute1, std::string input, 
+			    std::string answer)
+{
+  bool value = true;
+  
+  Testing("Attribute::=(string)");
+
+  attribute1 = input;
+  if ((std::string) attribute1 ==  answer)
+    Pass();
+  else {
+    value = false;
+    Fail();
+  }
+
+  return value;
+}
+
+
+template < class Attr >
+bool
+attribute_assignment_bool(Attr attribute1, bool input, bool answer)
+{
+  bool value = true;
+  
+  Testing("Attribute::=(bool)");
+
+  attribute1 = input;
+  
+  if ((bool) attribute1 ==  answer)
+    Pass();
+  else {
+    value = false;
+    Fail();
+  }
+
+  return value;
+}
+

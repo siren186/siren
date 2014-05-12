@@ -1,0 +1,89 @@
+-*- text -*-
+
+1.0.7b3
+-------
+
+* Fixed dist tarball - the comment.ini file was not included
+
+1.0.7b2
+-------
+
+* Use %g instead of %f for printing double precision numbers to
+  ini files and when converting to strings, as suggested by bug
+  #67302.
+
+
+1.0.7b1
+-------
+
+* Added logic to ignore comments (starting with ;) when reading in
+  an INI file.  Does not maintain comments on write (bug 677228)
+* Fixed memory leak in INI::section::copy (bug 828881)
+* Fixed some char* casting issues, where char* strings got cast to
+  bool on assignment rather than std::strings (bug 497734)
+* Fixed problem where datatype was lost when loading from file and
+  using already-initialized defaults (bug 520448)
+* Updated build process to be compatible with the latest versions of
+  Automake and Autoconf
+
+
+1.0.6
+-----
+
+* Fixed silly mistake in Debug.h.  There was a \ character as the last
+  character in one of the comments, which was causing pain and
+  suffering.
+* Fixed another silly mistake in config/cxx_have_broken_getline.m4.
+  I had a double ] at the end of the macro.
+* Cleaned up ini_getline.h so that it wouldn't complain on LinuxPPC.
+  I forgot that chars are unsigned on PPC.  Also short-circuited the
+  code so that it was only included if needed (ie, on platforms where
+  std::string::getline is broken()
+
+
+1.0.5
+-----
+
+* Fixed bug with abort when value was blank.  Caused by error in
+  crop() function
+* Worked around a bug in the getline(fstream&, string&, charT) in some
+  Sun Workshop 5.0 compilers.
+
+
+1.0.4
+-----
+
+* Changed from section* and attribute* to section and attribute in the
+  internal maps
+* Removed abstract base class attribute and the idea of a wrap
+  attribute
+
+
+1.0.3
+-----
+
+* Added test suite to distribution
+* Added operator overloading for attribute class to remove compiler
+  problems
+
+
+1.0.2
+-----
+
+* inilib now has documentation 
+* Registries now have an associated file, making saving on destruction
+  a pssibility.  <suggested by Jeff Sqyures>
+
+
+1.0.1
+-----
+
+* added test suite
+
+	
+1.0
+---
+
+* Initial release
+
+	

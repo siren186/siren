@@ -1,0 +1,171 @@
+% -*- latex -*-
+%
+This software may only be used by you under license from the
+University of Notre Dame.  A copy of the University of Notre Dame's
+Source Code Agreement is available at the inilib Internet website
+having the URL: <http://inilib.sourceforge.net/license/> If you
+received this software without first entering into a license with the
+University of Notre Dame, you have an infringing copy of this software
+and cannot use it without violating the University of Notre Dame's
+intellectual property rights.
+% 
+% $Id: section.tex,v 1.8 2001/04/17 22:05:45 jsquyres Exp $
+%
+
+\subsection[section class]{{\tt section} class}
+
+The {\tt section} class is designed to be contained in a registry.  It
+contains attributes, which are the actual data stored in a registry.
+Table~\ref{tbl:section-members} summarizes the function members of the
+{\tt section} class.
+
+\begin{table}[htbp]
+  \begin{center}
+    \leavevmode
+    \begin{tabular}{|l|p{3in}|}
+      \hline
+      \multicolumn{1}{|c|}{Name} & \multicolumn{1}{c|}{Purpose} \\
+      \hline
+      Default constructor & Create an empty section. \\
+      Copy constructor & Perform a deep copy. \\
+      Destructor & Destroy the section and all associated data. \\
+      \hline
+      {\tt operator=} & Assignment operator; clear the section and
+      perform deep copy.\\
+      {\tt operator+=} & Perform a deep copy/append. \\
+      {\tt operator[]} & Return a {\tt section}. \\
+      {\tt insert} & Insert a new {\tt section}. \\
+      {\tt clear} & Erase all data in the section. \\
+      {\tt find} & Return an iterator to a {\tt attribute}. \\
+      {\tt empty} & Return {\tt true} if there are no attributes, {\tt
+        false} otherwise. \\
+      {\tt begin} & Return iterator to beginning of the section. \\
+      {\tt end} & Return iterator past the end of the section. \\
+      \hline
+    \end{tabular}
+    \caption{Member functions in the {\tt section} class.}
+    \label{tbl:section-members}
+  \end{center}
+\end{table}
+
+\subsubsection{Convenience typedefs}
+
+Since the section class stores its attributes in an STL {\tt map},
+iterator access is provided to traverse all the attributes in a
+section.  To that end, the following typedefs are provided by the {\tt
+section} class:
+
+\bind{std::map<std::string, attribute\&>::iterator iterator}
+\bind{std::map<std::string, attribute\&>::const\_iterator const\_iterator}
+
+\subsubsection{Constructors}
+
+\bind{section()}
+\bind{section(const section\& s)}
+
+Creates an instance of the {\tt section} class.  If a section {\tt s}
+is given, {\tt s} is deep copied (along with all attributes in {\tt
+s}) into the target section.
+
+\subsubsection{Destructor}
+
+\bind{\~{}section()}
+
+Eliminates the instance of the {\tt section} class.  All {\tt
+attribute}s in the section will be destroyed as well.
+
+\subsubsection{Assignment Operator}
+
+\bind{section\& operator=(const section\& s)}
+
+Deep copies section {\tt s}.  All attributes in the target section
+before calling {\tt operator=} are deleted from the section.  Copies
+of all attributes in section {\tt s} are added to the target section.
+
+
+\subsubsection[operator+=]{{\tt operator+=}}
+\label{code:sec:op_pl_eq}
+
+\bind{section\& operator+=(const section\& s)}
+
+Deep copies section {\tt s}.  All attributes in the section before
+calling {\tt operator+=} are kept in the section.  In the event that
+there is an attribute in {\tt s} with the same key as an attribute in
+{\tt this}, the attribute in {\tt s} will overwrite the current
+attribute.
+
+
+\subsubsection{{\tt operator[]}}
+
+\bind{attribute\& operator[](const std::string\& key)}
+
+Returns the attribute with key {\tt key}.  If no such attribute exists
+in the section, a default attribute is returned (see
+Section~\ref{sec:implementation:attribute}).
+
+
+\subsubsection[insert]{{\tt insert}}
+
+\bind{void insert(const std::string\& key, {\sc Datatype} value)}
+\bind{void insert(const section\& sec)}
+
+When {\tt insert} is called with parameter {\tt sec}, {\tt insert}
+acts like {\tt operator+=} (see Section~\ref{code:sec:op_pl_eq}).
+
+When {\tt insert} is called with parameters {\tt key} and {\tt value},
+the attribute is added to the target section.  If an attribute with
+key {\tt key} already exists, it is overwritten.
+
+
+\subsubsection[clear]{{\tt clear}}
+
+\bind{void clear()}
+
+Removes all information from the {\tt section}.  All {\tt attribute}s
+are deleted.
+
+
+\subsubsection[find]{{\tt find}}
+\label{code:sec:find}
+
+\bind{iterator find(const std::string\& key)}
+
+Returns an iterator pointing to the (name, attribute) pair with name
+{\tt key}.
+%
+The attribute name is the {\tt first} element of the pair, and is a
+{\tt std::string}; the {\tt second} element of the pair is a reference
+to the {\tt attribute} of that name.
+%
+If there is no attribute in the section with the name {\tt key}, an
+iterator equal to {\tt section::end()} (see
+Section~\ref{code:sec:end}) is returned.
+
+
+\subsubsection[empty]{{\tt empty}}
+
+\bind{bool empty()}
+
+Returns {\tt true} if there are no {\tt attribute}s in the target
+section.  Returns {\tt false} otherwise.
+
+
+\subsubsection[begin]{{\tt begin}}
+
+\bind{iterator begin()}
+
+Returns the iterator returned by the underlying {\tt std::map}'s {\tt
+begin()} function.
+%
+The iterator points to (name, attribute) pairs, as described in the
+{\tt find()} function (Section~\ref{code:reg:find}).
+
+\subsubsection[end]{{\tt end}}
+\label{code:sec:end}
+
+\bind{iterator end()}
+
+Returns the iterator returned by the underlying {\tt std::map}'s {\tt
+end()} function.
+
+

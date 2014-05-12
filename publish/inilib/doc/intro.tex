@@ -1,0 +1,95 @@
+% -*- latex -*-
+%
+This software may only be used by you under license from the
+University of Notre Dame.  A copy of the University of Notre Dame's
+Source Code Agreement is available at the inilib Internet website
+having the URL: <http://inilib.sourceforge.net/license/> If you
+received this software without first entering into a license with the
+University of Notre Dame, you have an infringing copy of this software
+and cannot use it without violating the University of Notre Dame's
+intellectual property rights.
+% 
+% $Id: intro.tex,v 1.14 2000/09/04 01:20:46 bwbarrett Exp $
+%
+
+\section{Introduction}
+\label{sec:Introduction}
+
+{\tt inilib} is a C++\cite{cpp98} library which provides a convenient
+mechanism for saving the ``state'' of a program in the well-known
+``{\tt .ini} file'' format used in Microsoft
+Windows$^{TM}$~\cite{MS-WIN}.  {\tt inilib} gives the programmer a
+means of storing a number of arbitrary settings in memory with an easy
+access interface, as well providing means for saving the information
+to and loading it from a file on disk.  Data is stored in an easy to
+read format, allowing the user to modify any of the information with a
+simple text editor (i.e., outside the scope of {\tt inilib}).
+
+{\tt inilib} benefits the programmer by providing a simple, intuitive
+means to store any data that can be expressed in {\tt std::string},
+{\tt int}, {\tt double}, or {\tt bool} types.  In addition, {\tt
+  inilib} handles any conversions that may be necessary to convert
+from one type to the other.  Saving all information stored in {\tt
+  inilib} to disk or loading information from disk requires only one
+function call.
+
+{\tt inilib} provides a hierarchy for access of information, in order
+to provide the most flexibility for programmers.  The top level is
+called the {\tt registry}, where each registry corresponds to one
+file.  Inside of a {\tt registry}, there are zero or more {\tt
+  section}s.  A {\tt section} contains zero or more {\tt attribute}s,
+each of which actually store the information.  Each section is
+intended to contain all the information for a particular topic.  For
+example, a text editor program might have a section for window
+location and size, and another section containing the last documents
+opened by the user.  Figure~\ref{fig:sample_file} shows a possible
+{\tt .ini} file for such a program.
+
+\begin{figure}[!h]
+\mybox{[window settings] \\
+width = 400 \\
+height = 500 \\
+xpos = 10 \\
+ypos = 5 \\
+
+[history] \\
+file1 = /home/bbarrett/document1.txt \\
+file2 = /home/bbarrett/document2.txt \\
+file3 = /home/bbarrett/document3.txt }
+\caption{An example file produced by {\tt inilib}.}
+\label{fig:sample_file}
+\end{figure}
+
+Using the information provided in Figure~\ref{fig:sample_file} is
+simple.  An example implementation that prints out the last file
+opened (assuming that {\tt file1} always points to the last file
+opened) is shown in Figure~\ref{fig:print_file}.  The {\tt registry}
+constructor loads the file {\tt sample.ini}, from
+Figure~\ref{fig:sample_file}.  The next line demonstrates accessing a
+piece of information from {\tt inilib}.  The string in the first {\tt
+  []} gives the {\tt section} to access, 
+and the string in the second {\tt []} specifies which {\tt attribute}
+to return.  
+
+\begin{figure}[!h]
+\mybox{\#include <iostream> \\
+\#include <string> \\
+\#include "inilib.h" \\
+\\
+using namespace std; \\
+\\
+int \\
+main(int argc, char *argv[]) \\
+$\{$ \\
+\hspace*{1em}// Create the object and read the file \\
+\hspace*{1em}INI::registry information("sample.ini"); \\
+\\
+\hspace*{1em}// Output a given attribute \\
+\hspace*{1em}cout << information["history"]["file1"] << endl; \\
+\\
+\hspace*{1em}return 0; \\
+$\}$ }
+\caption{Printing out the last file ({\tt file1}) opened in the
+example text editor.}
+\label{fig:print_file}
+\end{figure}

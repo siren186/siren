@@ -1,0 +1,228 @@
+# -*- shell-script -*-
+#
+# $Id: configure.in,v 1.18 2002/05/23 17:52:20 bwbarrett Exp $
+#
+
+#
+# Disable caching.
+#
+define([AC_CACHE_LOAD], )
+define([AC_CACHE_SAVE], )
+
+#
+# Init autoconf
+#
+AC_INIT(./src/Debug.h)
+AC_CONFIG_AUX_DIR(./config)
+
+
+show_title() {
+  cat <<EOF
+
+*** $1
+EOF
+}
+
+
+########################################################################
+#                                                                      #
+# INITIALIZATION                                                       #
+#                                                                      #
+########################################################################
+show_title "Initialization, setup"
+
+#
+# Snarf out version number and print
+#
+vpath_top=$srcdir
+if test "$vpath_top" != ""; then
+    PFILE=$vpath_top/VERSION
+else
+    PFILE=VERSION
+fi
+INI_VERSION="`cat $PFILE`"
+AC_SUBST(INI_VERSION)
+echo "Configuring inilib library version $INI_VERSION"
+
+#
+# The third argument to AM_INIT_AUTOMAKE surpresses the PACKAGE and
+# VERSION macors
+#
+AM_INIT_AUTOMAKE(inilib, $INI_VERSION, 'no')
+AM_CONFIG_HEADER(src/ini_config.h)
+
+
+#
+# Get our host type
+#
+AC_CANONICAL_HOST
+AC_DEFINE_UNQUOTED(INI_ARCH, "$host", [inilib architecture string])
+
+
+########################################################################
+#                                                                      #
+# C++ COMPILER CONFIGURATION                                           #
+#                                                                      #
+########################################################################
+show_title "C++ Compiler Characteristics"
+
+#
+# Get our C++ compiler
+#
+AC_LANG_CPLUSPLUS
+AC_PROG_CXX
+AC_PROG_CXXCPP
+
+
+#
+# We kinda need the STL in order for the whole schebang to work
+#
+AH_TEMPLATE([INILIB_CXX_STL],
+	    [Do we have STL or not?.  Do not use anywhere, but test
+	     AC_DEFINEs it])
+LSC_CXX_HAVE_STL(INILIB)
+
+if test "$INILIB_CXX_STL" = "0"; then
+    AC_MSG_WARN([*** It appears that your C++ compiler does not support])
+    AC_MSG_WARN([*** the STL.  This package requires the STL in order])
+    AC_MSG_WARN([*** to build properly.  Please get an STL-enabled])
+    AC_MSG_WARN([*** C++ compiler.])
+    AC_MSG_ERROR([*** Cannot continue])
+fi
+
+#
+# Find where the template repository is
+#
+LSC_CXX_FIND_TEMPLATE_REPOSITORY(INILIB)
+
+#
+# Make automake clean emacs ~ files for "make clean"
+#
+CLEANFILES="-r *~ $INILIB_CXX_TEMPLATE_REPOSITORY"
+AC_SUBST(CLEANFILES)
+
+#
+# ARGH! Some Sun Solaris Workshop 5.0 compilers appear to have a
+# broken version of getline.  I hate Sun.  I hate Sun.  I hate Sun.
+# But they do make bcheck...
+#
+AH_TEMPLATE([INILIB_HAVE_BROKEN_GETLINE],
+	    [Sun Workshop 5.x (and probably prior) have broken 
+	     implementations of std::string::getline that we have 
+	     to code around.  Arrggh!!!])
+LSC_CXX_HAVE_BROKEN_GETLINE(INILIB)
+AC_SUBST(INILIB_CXX_HAVE_BROKEN_GETLINE)
+
+
+########################################################################
+#                                                                      #
+# C++ LINKER CONFIGURATION                                             #
+#                                                                      #
+########################################################################
+show_title "C++ Linking Characteristics"
+
+AC_PROG_RANLIB
+AC_CHECK_PROG(ARBIN, ar, ar, ;)
+
+#
+# Have to do some special things for some C++ compilers
+#
+CXX_AR_INSUFFICIENT=0
+INI_AR="$ARBIN cru"
+AM_CXXFLAGS=""
+
+# KCC
+if test "`basename $CXX`" = "KCC"; then
+     foo="--one_instantiation_per_object"
+     INI_AR="$CXX $foo -o"
+     AM_CXXFLAGS="$foo"
+     CXX_AR_INSUFFICIENT=1
+     unset foo
+fi
+
+# IRIX CC
+if test "`basename $CXX`" = "CC"; then
+    case "$host" in
+    *irix*)
+	foo="-LANG:std"
+	INI_AR="$CXX -ar -o"
+	AM_CXXFLAGS="$foo"
+	CXX_AR_INSUFFICIENT=1
+	unset foo
+	;;
+    esac
+fi
+
+AC_MSG_CHECKING([how to link])
+AC_MSG_RESULT([$INI_AR])
+
+AC_SUBST(INI_AR)
+AC_SUBST(AM_CXXFLAGS)
+
+
+########################################################################
+#                                                                      #
+# USER OPTIONS                                                         #
+#                                                                      #
+########################################################################
+show_title "User Options"
+
+#
+# Do we want debugging?
+#
+WANT_DEBUG=0
+AC_MSG_CHECKING([if want debugging output support])
+AC_ARG_ENABLE(debug, [  --enable-debug          Enable debugging output])
+if test -n "$enable_debug"; then
+    if test "$enable_debug" = "yes"; then
+	WANT_DEBUG=1
+    else
+	WANT_DEBUG=0
+    fi
+fi
+if test "$WANT_DEBUG" = 1; then
+    AC_MSG_RESULT([yes])
+else
+    AC_MSG_RESULT([no])
+fi
+AC_DEFINE_UNQUOTED(INI_DEBUG, $WANT_DEBUG, [Do we want debugging support?])
+
+#
+# Do we want to actually build the library?
+#
+WANT_LIBRARY=1
+AC_MSG_CHECKING([if want library])
+AC_ARG_ENABLE(enable_lib, [  --disable-lib           Disable builing library])
+if test -n "$enable"; then
+    if test "$disable_lib" = "yes"; then
+	WANT_LIBRARY=1
+    else
+	WANT_LIBRARY=0
+    fi
+fi
+AM_CONDITIONAL(WANT_INI_LIBRARY,test "$WANT_LIBRARY" = "1")
+if test "$WANT_LIBRARY" = 1; then
+    AC_MSG_RESULT([yes])
+else
+    AC_MSG_RESULT([no])
+fi
+
+
+########################################################################
+#                                                                      #
+# ALL DONE                                                             #
+#                                                                      #
+########################################################################
+show_title "Final Output"
+#
+# Party on
+#
+AC_OUTPUT([
+    Makefile
+    src/Makefile
+    contrib/Makefile
+    contrib/examples/Makefile
+    contrib/test_suite/Makefile
+    config/Makefile
+    doc/Makefile
+])

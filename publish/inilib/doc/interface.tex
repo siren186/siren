@@ -1,0 +1,53 @@
+% -*- latex -*-
+%
+This software may only be used by you under license from the
+University of Notre Dame.  A copy of the University of Notre Dame's
+Source Code Agreement is available at the inilib Internet website
+having the URL: <http://inilib.sourceforge.net/license/> If you
+received this software without first entering into a license with the
+University of Notre Dame, you have an infringing copy of this software
+and cannot use it without violating the University of Notre Dame's
+intellectual property rights.
+% 
+% $Id: interface.tex,v 1.7 2000/09/04 01:20:46 bwbarrett Exp $
+%
+
+\section{Interface}
+
+This section describes the interface provided by {\tt inilib}.
+
+Many of the methods provided in the {\tt inilib} package take one of
+four data types ({\tt bool}, {\tt double}, {\tt int} and {\tt
+std::string}) as an argument.  For example, the {\tt section.insert()}
+has four prototypes:
+
+\vspace{11pt}
+\noindent {\tt void insert(const std::string\& key, bool value);} \\
+\noindent {\tt void insert(const std::string\& key, double value);} \\
+\noindent {\tt void insert(const std::string\& key, int value);} \\
+\noindent {\tt void insert(const std::string\& key, std::string value);} \\
+
+For clarity, since {\tt inilib} frequently provides overloaded
+functions for use with any of the four supported types, the type will
+be denoted by the {\sc Smallcaps} font, which denotes one of the four
+({\tt int}, {\tt double}, {\tt std::string} and {\tt bool}) supported
+types:
+
+\vspace{11pt}
+\noindent {\tt void insert(const std::string\& key, {\sc Datatype} value);} \\
+
+The term ``target'' is used below to mean the object upon which the
+member function is invoked upon.  The term ``source'' typically refers
+to the argument of the member function.
+
+Additionally, the term ``deep copy'' is used to denote a copy where
+all data that is included in an object is copied to the target.  This
+means that after the copy, there are two distinct copies of the data
+(as opposed to two objects that refer to the same underlying data).
+
+\subsection{Namespace}
+
+All classes, methods, and operators in the {\tt inilib} library are
+contained in the {\tt INI} namespace.
+
+% From here, the subsections for the parts are included from inilib.tex

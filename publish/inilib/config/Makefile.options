@@ -1,0 +1,8 @@
+# -*- makefile -*-
+#
+# $Id: Makefile.options,v 1.1 2002/05/23 17:04:13 bwbarrett Exp $
+#
+# See the LICENSE file in the top-level directory for Copyright notices.
+#
+
+AUTOMAKE_OPTIONS	= foreign check-news

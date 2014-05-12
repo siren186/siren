@@ -1,0 +1,152 @@
+% -*- latex -*-
+%
+This software may only be used by you under license from the
+University of Notre Dame.  A copy of the University of Notre Dame's
+Source Code Agreement is available at the inilib Internet website
+having the URL: <http://inilib.sourceforge.net/license/> If you
+received this software without first entering into a license with the
+University of Notre Dame, you have an infringing copy of this software
+and cannot use it without violating the University of Notre Dame's
+intellectual property rights.
+% 
+% $Id: attribute.tex,v 1.14 2005/03/09 21:41:33 bwbarrett Exp $
+%
+
+\subsection[attribute]{{\tt attribute} Class}
+\label{sec:attribute}
+
+The {\tt attribute} class is a base class from which four classes are
+derived (see Section~\ref{sec:implementation:attribute}).  The
+constructors and destructors will rarely be used directly by the
+programmer -- the {\tt registry} and {\tt section} classes are
+intended to act as the primary interface to attributes.
+
+Table~\ref{tbl:attribute-members} summarizes the members functions on
+the {\tt attribute} class.
+
+\begin{table}[htbp]
+  \begin{center}
+    \leavevmode
+    \begin{tabular}{|l|p{3in}|}
+      \hline
+      \multicolumn{1}{|c|}{Name} & \multicolumn{1}{c|}{Purpose} \\
+      \hline
+      Default constructor & Create an empty attribute. \\
+      Copy constructor & Perform a deep copy. \\
+      {\sc Datatype} constructor & Intializer constructor. \\
+      Destructor & Destroy the section and all associated data. \\
+      \hline
+      {\tt operator=} & Assignment operator; clear the section and
+      perform deep copy.\\
+      Casting operators & Convert the attribute to an {\tt bool}, {\tt
+        int}, {\tt double}, or {\tt string}. \\
+      Unary operators & As appropriate (see
+      Section~\ref{sec:op_overload}). \\
+      {\tt get\_type} & Return an enum indicating the underlying
+      attribute's real type. \\
+      {\tt get\_precision} & Get the precision that will be used to
+      convert doubles to strings. \\
+      {\tt set\_precision} & Set the precision that will be used to
+      convert doubles to strings. \\
+      \hline
+    \end{tabular}
+    \caption{Member functions in the {\tt attribute} class.}
+    \label{tbl:attribute-members}
+  \end{center}
+\end{table}
+
+
+\subsubsection{Type Enumeration}
+
+Each attribute has a type associated with it.  The {\tt get\_type()}
+function (see Section~\ref{sec:att:gettype}) can be used to determine
+the type of an attribute.  The following enumeration is used to
+determine type:
+
+\vspace{11pt}
+\bind{enum attr\_type \{BOOL, DOUBLE, INT, STRING, NONE\};}
+
+\subsubsection{Constructors}
+
+\bind{attribute()}
+\bind{attribute(attribute*)}
+\bind{attribute(const attribute\&)}
+\bind{attribute({\sc Datatype} value)}
+
+Creates an attribute.  For each of the four attribute types, {\tt
+value} can only be the same type as the attribute.  For example, {\tt
+bool\_attribute} only has a constructor with {\tt value} of type bool.
+
+\subsubsection{Destructors}
+
+\bind{\~{}attribute()}
+
+Destroys the attribute, freeing any memory associated with it.  {\tt
+wrap\_attributes} also destroy the underlying {\tt attribute}, if any
+(See Section~\ref{sec:implementation:attribute}).
+
+\subsubsection{Assignment Operator}
+
+\bind{attribute\& operator=({\sc Datatype} value)}
+
+Assigns {\tt value} to the attribute.  For more information on how
+conversions are handled by {\tt inilib}, see
+Section~\ref{sec:conversions}.  {\tt value} will be cast to the type
+of the underlying attribute, which may cause a loss of data (such as
+assigning a {\tt double} to any of the other three data types).  The
+precision of a {\tt double} assigned to a {\tt std::string} can be
+modified using the {\tt set\_precision()} and {\tt get\_precision()}
+methods (Section~\ref{sec:att:precision}).
+
+\subsubsection{Casting Operator}
+
+\bind{operator {\sc Datatype}()}
+
+Casts the value of the attribute to the specified type.  However, with
+{\tt operator=()}, certain casts can cause a loss of data (such as
+casting a {\tt double} to an {\tt int}).  Form more information on how
+conversions are handled during casting, see
+Section~\ref{sec:conversions}.
+
+As the casting operator is defined for {\tt int}, {\tt double}, {\tt
+  bool}, and {\tt std::string}, compiler ambiguities can arise when
+using attributes for many common operations ({\tt operator==()}, for
+instance).  To avoid the problem of compiler ambiguities that arise
+because of the {\tt operator=()} being overloaded, many of the
+operators have been overloaded for the attribute classes.  More
+information is available in Section~\ref{sec:op_overload}.
+
+\subsubsection{Other Overloaded Operators}
+
+In order to eliminate compiler ambiguities, many of the overloadable
+C++ operators are overloaded for the {\tt attribute} classes. See
+Section~\ref{sec:op_overload} for more information.
+
+\subsubsection{{\tt get\_type}}
+\label{sec:att:gettype}
+
+\bind{attr\_type get\_type()}
+
+Returns the underlying type of the attribute.  If the attribute is a
+{\tt wrap\_attribute}, the result will be the type of the underlying
+attribute.  If an attribute has not yet been assigned a type, {\tt
+NONE} is returned.
+
+\subsubsection{Double Precision Setting}
+\label{sec:att:precision}
+
+\bind{int attribute::get\_precision()}
+\bind{void attribute::set\_precision(int precision)}
+
+Certain functions require that a {\tt double} be assigned or cast to a
+{\tt std::string}.  The {\tt set\_precision()} function is used to set
+the number of significant figures  that will be stored after the
+conversion.  The {\tt get\_precision()} function allows access to the
+current precision for the conversion.  Both functions are {\tt static}
+to the {\tt attribute} class, meaning that the precision level is for
+the entire class, not specific instances.
+  
+{\tt precision} should be no higher than 100.  If {\tt precision}
+is higher than 100, it will automatically be reduced to 100
+without warning.  The result of {\tt get\_precision()} in this case
+will be 100.

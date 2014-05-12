@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\..\output"
-			IntermediateDirectory="..\..\..\output"
+			OutputDirectory="..\..\output\bin"
+			IntermediateDirectory="..\..\output\bin"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\output\gtestd.lib"
+				AdditionalDependencies="..\..\output\lib\gtestd.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -94,8 +94,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\..\output"
-			IntermediateDirectory="..\..\..\output"
+			OutputDirectory="..\..\output\bin"
+			IntermediateDirectory="..\..\output\bin"
 			ConfigurationType="1"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -136,7 +136,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\output\gtest.lib"
+				AdditionalDependencies="..\..\output\lib\gtest.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"

@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\..\output"
-			IntermediateDirectory="..\..\..\output"
+			OutputDirectory="..\..\..\output\lib"
+			IntermediateDirectory="..\..\..\output\lib"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
@@ -81,8 +81,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\..\output"
-			IntermediateDirectory="..\..\..\output"
+			OutputDirectory="..\..\..\output\lib"
+			IntermediateDirectory="..\..\..\output\lib"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"

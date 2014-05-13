@@ -27,6 +27,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "protoc", "..\publish\protob
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libprotoc", "..\publish\protobuf\vsprojects\libprotoc.vcproj", "{B84FF31A-5F9A-46F8-AB22-DBFC9BECE3BE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "boost", "..\src\boost\boost.vcproj", "{24190AC8-F247-430F-8680-5C8596D5000F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -65,6 +67,10 @@ Global
 		{B84FF31A-5F9A-46F8-AB22-DBFC9BECE3BE}.Debug|Win32.Build.0 = Debug|Win32
 		{B84FF31A-5F9A-46F8-AB22-DBFC9BECE3BE}.Release|Win32.ActiveCfg = Release|Win32
 		{B84FF31A-5F9A-46F8-AB22-DBFC9BECE3BE}.Release|Win32.Build.0 = Release|Win32
+		{24190AC8-F247-430F-8680-5C8596D5000F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{24190AC8-F247-430F-8680-5C8596D5000F}.Debug|Win32.Build.0 = Debug|Win32
+		{24190AC8-F247-430F-8680-5C8596D5000F}.Release|Win32.ActiveCfg = Release|Win32
+		{24190AC8-F247-430F-8680-5C8596D5000F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

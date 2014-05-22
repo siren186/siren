@@ -16,29 +16,51 @@
  *  用法4:
  *      bjam toolset=msvc-10.0 --without-python stage   ///> 不编译python库
  *      
+ *  用法5:
+ *      bjam toolset=msvc-10.0 --with-regex stage debug release threading=multi threading=single link=shared link=static runtime-link=shared runtime-link=static
+ *      
  *      
  *  将生成的相应库文件,拷贝至siren工程目录:\output\lib\下,方可正常编译本代码.
  */
-#include <boost/thread.hpp> 
-#include <iostream> 
 
-void wait(int seconds) 
-{ 
-    boost::this_thread::sleep(boost::posix_time::seconds(seconds)); 
-} 
+#include <iostream> 
+#include "gtest/gtest.h"
+#include <boost/thread.hpp>
+#include <boost/log/core.hpp>
+#include <boost/log/trivial.hpp>
+#include <boost/log/expressions.hpp>
+#include <boost/log/utility/setup/file.hpp>
 
 void thread() 
 { 
     for (int i = 0; i < 5; ++i) 
     { 
-        wait(1); 
+        boost::this_thread::sleep(boost::posix_time::seconds(1));
         std::cout << i << std::endl; 
     } 
 } 
 
 int main(int argc, char **argv)
+{ 
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
+
+TEST(Boost, Thread)
 {
     boost::thread t(thread); 
-    t.join(); 
-    return 0;
+    t.join();
+}
+
+TEST(Boost, Log)
+{
+    boost::log::add_file_log("c:\\siren_boost.log");
+
+    boost::log::core::get()->set_filter(boost::log::trivial::severity >= boost::log::trivial::info); ///> 过滤info及以下级别
+    BOOST_LOG_TRIVIAL(trace) << "A trace severity message";
+    BOOST_LOG_TRIVIAL(debug) << "A debug severity message";
+    BOOST_LOG_TRIVIAL(info) << "An informational severity message";
+    BOOST_LOG_TRIVIAL(warning) << "A warning severity message";
+    BOOST_LOG_TRIVIAL(error) << "An error severity message";
+    BOOST_LOG_TRIVIAL(fatal) << "A fatal severity message";
 }

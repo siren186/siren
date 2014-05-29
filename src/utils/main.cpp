@@ -14,3 +14,9 @@ TEST(FileUtils,lnk)
     EXPECT_TRUE(sr::GetPathFromLnkFile(L"c:\\1.lnk", szDstPath, MAX_PATH) == TRUE);
     EXPECT_TRUE(0== _wcsicmp(szDstPath, L"c:\\2.exe"));
 }
+
+TEST(FileUtils,folder)
+{
+    EXPECT_TRUE(sr::DeleteFolder(L"c:\\siren test") == TRUE);
+    EXPECT_TRUE(sr::CopyFolder(L"c:\\1", L"c:\\2") == TRUE);
+}

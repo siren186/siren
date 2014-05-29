@@ -95,6 +95,52 @@ namespace sr
         return bReturn;
     }
 
+    BOOL DeleteFolder(LPCTSTR lpFolder)
+    {
+        if (!::PathFileExists(lpFolder))
+            return FALSE;
+
+        CString sFolder = lpFolder;
+        sFolder.AppendChar(L'\0');
+
+        SHFILEOPSTRUCT FileOp; 
+        ZeroMemory((void*)&FileOp,sizeof(SHFILEOPSTRUCT));
+
+        FileOp.fFlags = FOF_NOCONFIRMATION; 
+        FileOp.hNameMappings = NULL; 
+        FileOp.hwnd = NULL; 
+        FileOp.lpszProgressTitle = NULL; 
+        FileOp.pFrom = sFolder; 
+        FileOp.pTo = NULL; 
+        FileOp.wFunc = FO_DELETE; 
+
+        return SHFileOperation(&FileOp) == 0;
+    }
+
+    BOOL CopyFolder(LPCTSTR lpSrcFolder, LPCTSTR lpDstFolder)
+    {
+        if (!lpSrcFolder || !lpDstFolder)
+            return FALSE;
+
+        CString sSrcFolder = lpSrcFolder;
+        sSrcFolder.AppendChar(L'\0');
+        CString sDstFolder = lpDstFolder;
+        sDstFolder.AppendChar(L'\0');
+
+        SHFILEOPSTRUCT FileOp; 
+        ZeroMemory((void*)&FileOp,sizeof(SHFILEOPSTRUCT));
+
+        FileOp.fFlags = FOF_NOCONFIRMATION ; 
+        FileOp.hNameMappings = NULL; 
+        FileOp.hwnd = NULL; 
+        FileOp.lpszProgressTitle = NULL; 
+        FileOp.pFrom = sSrcFolder; 
+        FileOp.pTo = sDstFolder; 
+        FileOp.wFunc = FO_COPY; 
+
+        return SHFileOperation(&FileOp) == 0;
+    }
+
 } ///> end of namespace sr
 
 #endif ///> __FILE_UTILS_H__

@@ -116,7 +116,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\publish\gtest\include;..\..\publish"
+				AdditionalIncludeDirectories="..\..\publish\gtest\include;..\..\publish;..\..\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -174,29 +174,43 @@
 	<Files>
 		<Filter
 			Name="src"
-			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-			<File
-				RelativePath=".\file_utils.h"
-				>
-			</File>
 			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\str_utils.h"
+		</Filter>
+		<Filter
+			Name="include"
+			>
+			<Filter
+				Name="siren"
 				>
-			</File>
-			<File
-				RelativePath=".\sys_utils.h"
-				>
-			</File>
-			<File
-				RelativePath=".\task_scheduler.h"
-				>
-			</File>
+				<Filter
+					Name="utils"
+					>
+					<File
+						RelativePath="..\..\include\siren\utils\file_utils.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\include\siren\utils\msgbox.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\include\siren\utils\str_utils.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\include\siren\utils\sys_utils.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\include\siren\utils\task_scheduler.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

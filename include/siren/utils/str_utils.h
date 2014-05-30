@@ -26,7 +26,7 @@
  */
 namespace sr
 {
-    static void SplitStringA(const std::string& input,  const char splitChar,    std::vector<std::string>& output)
+    void SplitStringA(const std::string& input,  const char splitChar,    std::vector<std::string>& output)
     {
         output.clear();
         std::string::size_type loc_start = input.find_first_not_of(splitChar);
@@ -43,7 +43,7 @@ namespace sr
         }
     }
 
-    static void SplitStringW(const std::wstring& input, const wchar_t splitChar, std::vector<std::wstring>& output)
+    void SplitStringW(const std::wstring& input, const wchar_t splitChar, std::vector<std::wstring>& output)
     {
         output.clear();
         std::wstring::size_type loc_start = input.find_first_not_of(splitChar);
@@ -60,7 +60,7 @@ namespace sr
         }
     }
 
-    static int SplitStringA(const std::string& input,  const std::string& delimiter,  std::vector<std::string>& output, bool includeEmpties)
+    int SplitStringA(const std::string& input,  const std::string& delimiter,  std::vector<std::string>& output, bool includeEmpties)
     {
         output.clear();
         int iPos = 0;
@@ -125,7 +125,7 @@ namespace sr
         return numFound;
     }
 
-    static int SplitStringW(const std::wstring& input, const std::wstring& delimiter, std::vector<std::wstring>& output, bool includeEmpties)
+    int SplitStringW(const std::wstring& input, const std::wstring& delimiter, std::vector<std::wstring>& output, bool includeEmpties)
     {
         output.clear();
         int iPos = 0;

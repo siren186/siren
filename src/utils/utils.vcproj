@@ -198,6 +198,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\include\siren\utils\rand_utils.h"
+						>
+					</File>
+					<File
 						RelativePath="..\..\include\siren\utils\str_utils.h"
 						>
 					</File>

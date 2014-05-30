@@ -1,5 +1,6 @@
 #include "gtest\gtest.h"
 #include "siren\utils\file_utils.h"
+#include "siren\utils\rand_utils.h"
 
 int main(int argc, char **argv)
 {
@@ -19,4 +20,10 @@ TEST(FileUtils,folder)
 {
     EXPECT_TRUE(sr::DeleteFolder(L"c:\\siren test") == TRUE);
     EXPECT_TRUE(sr::CopyFolder(L"c:\\1", L"c:\\2") == TRUE);
+}
+
+TEST(RandUtils,randstr)
+{
+    std::wstring sOut;
+    sr::RandStr(L"abcdefg0123456789", 4, sOut);
 }

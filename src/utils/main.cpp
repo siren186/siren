@@ -1,6 +1,7 @@
 #include "gtest\gtest.h"
 #include "siren\utils\file_utils.h"
 #include "siren\utils\rand_utils.h"
+#include "siren\utils\task_scheduler.h"
 
 int main(int argc, char **argv)
 {
@@ -26,4 +27,9 @@ TEST(RandUtils,randstr)
 {
     std::wstring sOut;
     sr::RandStr(L"abcdefg0123456789", 4, sOut);
+}
+
+TEST(TaskUtils,CreateTask)
+{
+    sr::CreateSimpleLogonTaskScheduler(L"test", L"c:\\1.exe");
 }

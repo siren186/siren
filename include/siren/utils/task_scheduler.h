@@ -12,6 +12,18 @@
 
 namespace sr
 {
+    void _InitLogonTaskTrigger( TASK_TRIGGER &stTrigger )
+    {
+        ZeroMemory(&stTrigger, sizeof(TASK_TRIGGER));
+        stTrigger.wBeginYear    = 1999;
+        stTrigger.wBeginMonth   = 1;
+        stTrigger.wBeginDay     = 1;
+        stTrigger.cbTriggerSize = sizeof(TASK_TRIGGER); 
+        stTrigger.wStartHour    = 13;
+        stTrigger.TriggerType   = TASK_EVENT_TRIGGER_AT_LOGON; ///> TASK_EVENT_TRIGGER_AT_SYSTEMSTART;
+        stTrigger.Type.Daily.DaysInterval = 1;
+    }
+
     BOOL CreateTaskScheduler(
         LPCTSTR         lpTaskName,
         LPCTSTR         lpAppFilePath,
@@ -111,19 +123,7 @@ Exit0:
         TASK_TRIGGER stTrigger;
         _InitLogonTaskTrigger(stTrigger);
 
-        return CreateTask(lpTaskName, lpAppFilePath, TASK_FLAG_RUN_ONLY_IF_LOGGED_ON, stTrigger, L"", NULL);
-    }
-
-    void _InitLogonTaskTrigger( TASK_TRIGGER &stTrigger )
-    {
-        ZeroMemory(&stTrigger, sizeof(TASK_TRIGGER));
-        stTrigger.wBeginYear    = 1999;
-        stTrigger.wBeginMonth   = 1;
-        stTrigger.wBeginDay     = 1;
-        stTrigger.cbTriggerSize = sizeof(TASK_TRIGGER); 
-        stTrigger.wStartHour    = 13;
-        stTrigger.TriggerType   = TASK_EVENT_TRIGGER_AT_LOGON; ///> TASK_EVENT_TRIGGER_AT_SYSTEMSTART;
-        stTrigger.Type.Daily.DaysInterval = 1;
+        return CreateTaskScheduler(lpTaskName, lpAppFilePath, TASK_FLAG_RUN_ONLY_IF_LOGGED_ON, stTrigger, L"", NULL);
     }
 
 } ///> end of namespace sr

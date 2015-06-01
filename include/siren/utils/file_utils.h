@@ -1,8 +1,12 @@
 /**
- * 死人
- * siren186@163.com
- * Date: 2014-05-06
+ * @file
+ * @brief 文件操作相关函数集合
+ * @version
+ * @remarks
+ * @date 2014-05-06
+ * @bug
  */
+
 
 #ifndef __FILE_UTILS_H__
 #define __FILE_UTILS_H__
@@ -16,6 +20,19 @@
 
 namespace sr
 {
+    /**
+     * @brief 创建快捷方式
+     * @param[in] lpLnkFilePath 快捷方式生成路径
+     * @param[in] lpDstFilePath 指向的目标文件路径
+     * @param[in] lpArgs 命令行参数
+     * @param[in] lpDescription 描述
+     * @param[in] wVirtualKeyCode 快捷键
+     * @param[in] lpIconPath 图标路径
+     * @param[in] nIcon 指定使用第几个图标
+     * @param[in] nShowCmd 窗口显示方式
+     * @return 成功返回TRUE, 失败返回FALSE
+     * @see GetPathFromLnkFile
+     */
     BOOL CreateLnkFile(
         LPCTSTR lpLnkFilePath,
         LPCTSTR lpDstFilePath,
@@ -65,6 +82,14 @@ namespace sr
         return bReturn;
     }
 
+    /**
+     * @brief 获取快捷方式指向的目标文件路径
+     * @param[in] lpLnkFilePath 快捷方式路径
+     * @param[out] lpDstPath 用于存储目标路径的缓冲区
+     * @param[in] cchDstPath 缓冲区长度
+     * @return 成功返回TRUE, 失败返回FALSE
+     * @see CreateLnkFile
+     */
     BOOL GetPathFromLnkFile( LPCTSTR lpLnkFilePath, LPTSTR lpDstPath, int cchDstPath )
     {
         bool bReturn = FALSE;
@@ -95,6 +120,12 @@ namespace sr
         return bReturn;
     }
 
+    /**
+     * @brief 删除文件夹
+     * @param[in] lpFolder 要删除的文件夹全路径
+     * @return 成功返回TRUE, 失败返回FALSE
+     * @see CopyFolder
+     */
     BOOL DeleteFolder(LPCTSTR lpFolder)
     {
         if (!::PathFileExists(lpFolder))
@@ -117,6 +148,13 @@ namespace sr
         return SHFileOperation(&FileOp) == 0;
     }
 
+    /**
+     * @brief 复制文件夹
+     * @param[in] lpSrcFolder 源文件夹
+     * @param[in] lpDstFolder 目标文件夹
+     * @return 成功返回TRUE,失败返回FALSE
+     * @see DeleteFolder
+     */
     BOOL CopyFolder(LPCTSTR lpSrcFolder, LPCTSTR lpDstFolder)
     {
         if (!lpSrcFolder || !lpDstFolder)
